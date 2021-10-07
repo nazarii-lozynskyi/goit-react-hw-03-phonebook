@@ -19,6 +19,21 @@ class PhoneBook extends React.Component {
     filter: '',
   };
 
+  componentDidMount() {
+    const contacts = localStorage.getItem('Contacts');
+    const parsedContacts = JSON.parse(contacts);
+
+    if (parsedContacts) {
+      this.setState({ contacts: parsedContacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('Contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   addContacts = data => {
     //console.log(data);
 
@@ -62,7 +77,7 @@ class PhoneBook extends React.Component {
   };
 
   render() {
-    const { filter, contacts } = this.state;
+    const { filter } = this.state;
 
     const visibleContacts = this.getVisibleContacts();
 
